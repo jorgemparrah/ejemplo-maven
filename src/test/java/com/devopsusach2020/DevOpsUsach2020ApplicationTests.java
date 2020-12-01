@@ -8,6 +8,8 @@ class DevOpsUsach2020ApplicationTests {
 
 	@Test
 	void contextLoads() {
+		String[] args = {};
+		DevOpsUsach2020Application.main(args);
 	}
 
 }
