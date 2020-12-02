@@ -38,4 +38,12 @@ public class RestDataTest {
         Assertions.assertTrue(output.getMensaje().equals("Mensaje Recibido: null"));
     }
 
+    @Test
+	void getTotalPaisWithMessageNull() {
+        RestData target = new RestData();
+        Pais output = target.getTotalPais(null);
+        Assertions.assertNotNull(output);
+        Assertions.assertNull(output.getCountry());
+    }
+
 }
