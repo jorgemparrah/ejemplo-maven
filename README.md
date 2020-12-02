@@ -1,5 +1,5 @@
 # Getting Started
-Algoa
+Algo
 
 ## Windows
 
