@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Compile Code') {
+            steps {
+                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
+                    sh "./mvnw clean compile -e"
+                }
+            }
+        }
+        stage('Test Code') {
+            steps {
+                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
+                    sh "./mvnw clean test -e"
+                }
+            }
+        }
+        stage('Jar Code') {
+            steps {
+                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
+                    sh "./mvnw clean package -e"
+                }
+            }
+        }
+        stage('Run Jar') {
+            steps {
+                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
+                    sh '''
+                    ./mvnw spring-boot:run > server.log 2>&1&
+                    while [ $(cat server.log | grep -c "Started DevOpsUsach2020Application") -eq 0 ]
+                    do
+                        sleep 1
+                    done
+                    '''
+                }
+            }
+        }
+        stage('Testing Application') {
+            steps {
+                sh "curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
+            }
+        }
+    }
+}
