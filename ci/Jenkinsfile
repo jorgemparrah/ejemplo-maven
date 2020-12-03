@@ -24,9 +24,11 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-            dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
-                withSonarQubeEnv('LocalSonar') {
-                    sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            steps {
+                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
+                    withSonarQubeEnv('LocalSonar') {
+                        sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                    }
                 }
             }
         }
