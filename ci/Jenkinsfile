@@ -4,45 +4,35 @@ pipeline {
     stages {
         stage('Compile Code') {
             steps {
-                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
-                    sh "./mvnw clean compile -e"
-                }
+                sh "./mvnw clean compile -e"
             }
         }
         stage('Test Code') {
             steps {
-                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
-                    sh "./mvnw clean test -e"
-                }
+                sh "./mvnw clean test -e"
             }
         }
         stage('Jar Code') {
             steps {
-                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
-                    sh "./mvnw clean package -e"
-                }
+                sh "./mvnw clean package -e"
             }
         }
         stage('SonarQube analysis') {
             steps {
-                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
-                    withSonarQubeEnv('LocalSonar') {
-                        sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                    }
+                withSonarQubeEnv('LocalSonar') {
+                    sh './mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                 }
             }
         }
         stage('Run Jar') {
             steps {
-                dir('/home/jparra/Documentos/personal/Diplomado/M03/S04/ejemplo-maven'){
-                    sh '''
-                    ./mvnw spring-boot:run > server.log 2>&1&
-                    while [ $(cat server.log | grep -c "Started DevOpsUsach2020Application") -eq 0 ]
-                    do
-                        sleep 1
-                    done
-                    '''
-                }
+                sh '''
+                ./mvnw spring-boot:run > server.log 2>&1&
+                while [ $(cat server.log | grep -c "Started DevOpsUsach2020Application") -eq 0 ]
+                do
+                    sleep 1
+                done
+                '''
             }
         }
         stage('Testing Application') {
